@@ -106,8 +106,7 @@ https://gitee.com/xiayang0521/rk3399/releases/tag/rk3399%E5%88%B7%E6%9C%BA%E5%B7
 ```
 dd if=/dev/zero of=/dev/mmcblk2 bs=1M count=300
 ```
-
-重启后可以自动进入maskrom
+关机（如果有tf卡，关机后，拔掉tf卡），重新开机后可以自动进入maskrom模式
 
 #### c 实在没办法
 
