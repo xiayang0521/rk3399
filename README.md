@@ -12,7 +12,7 @@
 |      RAM      |                      |                  Dual-channel DDR3 1GB * 4                   |
 |     Flash     |                      |                         32G  eMMC 5.1                        |
 |   Ethernet    |        RTL8211F      |                            10/100/1000                       |
-|    WIFI+BT    |        RTL8822BE     |  802.11AC/ABGN PCIE WLAN WITH BLUETOOTH 4.2 SINGLE-CHIP CONTROLLER      |
+|    WIFI+BT    |M2-EKEY-PCIE RTL8822BE|  802.11AC/ABGN PCIE WLAN WITH BLUETOOTH 4.2 SINGLE-CHIP CONTROLLER      |
 |    USB 2.0    |                      |                        USB 2.0[ops]   * 4                    |
 |    USB 3.0    |                      |                   USB 3.0 [on board] * 2                    |
 |     HDMI      |                      |            HDMI 1.4[on board] + HDMI 2.0[ops]                |
