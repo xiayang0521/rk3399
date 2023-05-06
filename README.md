@@ -1,8 +1,8 @@
 # SMART Technologies AM40
 
-> 镜像下载：http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/
->
-> Armbian下载：https://github.com/ophub/amlogic-s9xxx-armbian/releases
+镜像下载：http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/
+
+Armbian下载：https://github.com/ophub/amlogic-s9xxx-armbian/releases
 
 ## 规格参数
 
@@ -28,24 +28,25 @@
 
 am40主机介绍
 
-> https://gitee.com/xiayang0521/rk3399/releases/download/rk3399%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%E5%92%8C%E9%A9%B1%E5%8A%A8/specs_am40.pdf
+https://gitee.com/xiayang0521/rk3399/releases/download/rk3399%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%E5%92%8C%E9%A9%B1%E5%8A%A8/specs_am40.pdf
 
 教育系统卡刷包：
 
-> https://support.smarttech.com/docs/accessories/comp-modules-and-appliances/iq-appliance/en/downloads/am40/current-version.cshtml
+https://support.smarttech.com/docs/accessories/comp-modules-and-appliances/iq-appliance/en/downloads/am40/current-version.cshtml
 
 系统介绍：
 
-> https://www.youtube.com/watch?v=vRDcXASva3s
+https://www.youtube.com/watch?v=vRDcXASva3s
 
 开箱：
 
-> https://g.itemz.cn/IooVVP
+https://g.itemz.cn/IooVVP
 
 ## 卡刷教程
 
 ###1. 将
-> http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/Armbian_23.02.2_am40_jammy_current_6.1.11.7z
+
+http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/Armbian_23.02.2_am40_jammy_current_6.1.11.7z
 
 解压出Armbian_23.02.2_am40_jammy_current_6.1.11.img,烧录到tf卡，
 
@@ -73,7 +74,8 @@ armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
 
 ## Windows线刷教程
 ### 1.下载DriverAssitant_v5.1.1,AndroidTool,rk3399_loader_v1.24.126.bin 
-> https://gitee.com/xiayang0521/rk3399/releases/tag/rk3399%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%E5%92%8C%E9%A9%B1%E5%8A%A8
+
+https://gitee.com/xiayang0521/rk3399/releases/tag/rk3399%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%E5%92%8C%E9%A9%B1%E5%8A%A8
 
 安装DriverAssitant_v5.1.1,打开AndroidTool,如图选择rk3399_loader_v1.24.126.bin 作为 Loader, img结尾的armbian镜像作为 System(注意地址为0x00000000)
 
