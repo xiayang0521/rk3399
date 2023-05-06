@@ -25,6 +25,23 @@
 |     HDMI      |                      |            HDMI 1.4[on board] + HDMI 2.0[ops]                |
 |     power     |  12V5A ( 5V2A 12V1A works) |  PORT size： 5.5 * 2.5 [ops main]；3.0 * 1.1 [hided; on board]|
 
+
+am40主机介绍
+
+> https://gitee.com/xiayang0521/rk3399/releases/download/rk3399%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%E5%92%8C%E9%A9%B1%E5%8A%A8/specs_am40.pdf
+
+教育系统卡刷包：
+
+> https://support.smarttech.com/docs/accessories/comp-modules-and-appliances/iq-appliance/en/downloads/am40/current-version.cshtml
+
+系统介绍：
+
+> https://www.youtube.com/watch?v=vRDcXASva3s
+
+开箱：
+
+> https://g.itemz.cn/IooVVP
+
 ## 卡刷教程
 
 ###1. 将
