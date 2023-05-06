@@ -20,7 +20,12 @@
 
 ## 卡刷教程
 
-###0. Windows下TF烧写
+###1. 将
+> http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/Armbian_23.02.2_am40_jammy_current_6.1.11.7z
+
+解压出Armbian_23.02.2_am40_jammy_current_6.1.11.img,烧录到tf卡，
+
+#### Windows下TF烧写
 
 > 使用rufus烧写工具 https://rufus.ie/zh/
 直接烧录img/img.xz/img.gz格式的镜像文件或者镜像压缩文件
@@ -29,10 +34,8 @@
 
 如图 依次选择tf卡设备和镜像文件，点击开始，等待烧录完成即可。
 
-###1. 将
-> http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/Armbian_23.02.2_am40_jammy_current_6.1.11.7z
+插到机子上，开机，即可启动tf外置系统 
 
-解压出Armbian_23.02.2_am40_jammy_current_6.1.11.img,烧录到tf卡，插到机子上开机，即可启动外置系统 
 
 ###2. 如需装进emmc，ssh登陆后，将Armbian_23.02.2_am40_jammy_current_6.1.11.img上传到/root/,执行
 ```
@@ -46,6 +49,7 @@ armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
 
 ## Windows线刷教程
 ### 1.下载DriverAssitant_v5.1.1,AndroidTool,rk3399_loader_v1.24.126.bin 
+> https://gitee.com/xiayang0521/rk3399/releases/tag/rk3399%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%E5%92%8C%E9%A9%B1%E5%8A%A8
 
 安装DriverAssitant_v5.1.1,打开AndroidTool,如图选择rk3399_loader_v1.24.126.bin 作为 Loader, img结尾的armbian镜像作为 System(注意地址为0x00000000)
 
@@ -53,13 +57,11 @@ armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
 
 ### 2.	插usb双公头到第一个usb3.0(上面的)，另一端接电脑
 
-### 3.	找到service开关，拨到service；
+### 3.	找到service开关，拨到service
 
-### 4.发现一个maskrom设备后，点击下载镜像标签，点击执行
+### 4.  进入maskrom模式
 
- ![输入图片说明](assets/burning.png)
-
-### 5.针对内部系统为原版安卓系统，
+#### a 内部系统为原版安卓系统
 
 插电开机，打开瑞芯微开发工具，会发现一个adb设备，点击切换，
 
@@ -71,7 +73,9 @@ armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
 
  ![输入图片说明](assets/%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD_androidtool.png)
 
-如果不是原版安卓系统，比如启动了linux系统（外置内置均可），进入系统后执行
+#### b 不是安卓系统
+
+比如启动了linux系统（外置内置均可），进入系统后执行
 
 ```
 dd if=/dev/zero of=/dev/mmcblk2 bs=1M count=300
@@ -79,12 +83,17 @@ dd if=/dev/zero of=/dev/mmcblk2 bs=1M count=300
 
 重启后可以自动进入maskrom
 
-实在没办法，拆机短接maskrom短接点 ，插usb双公头到第一个usb3.0(上面的)，另一端接电脑，插电开机，在刷机软件中观察是否进入maskrom模式；
+#### c 实在没办法
+
+拆机短接maskrom短接点 ，插usb双公头到第一个usb3.0(上面的)，另一端接电脑，插电开机，在刷机软件中观察是否进入maskrom模式；
  ![输入图片说明](assets/maskron%E7%9F%AD%E6%8E%A5%E7%82%B9.png)
 
-### 6.刷完记得把service开关，拨到normal；
+### 5.发现一个maskrom设备后，点击下载镜像标签，点击执行
+
+ ![输入图片说明](assets/burning.png)
 
 
+### 6.刷完记得把service开关，拨到normal
 
 
 ### Linux线刷教程
