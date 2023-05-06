@@ -334,7 +334,10 @@ mmc dev 0
 mmc erase 0 2000
 reset
 ```
-
+或者进入系统后
+```
+dd if=/dev/zero of=/dev/mmcblk2 bs=1M count=300
+```
 ---
 
 Q：使用 apt 安装软件包时出现如下警告：
