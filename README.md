@@ -20,6 +20,15 @@
 
 ## 卡刷教程
 
+###0. Windows下TF烧写
+
+> 使用rufus烧写工具 https://rufus.ie/zh/
+直接烧录img/img.xz/img.gz格式的镜像文件或者镜像压缩文件
+
+![输入图片说明](assets/rufus%20tf.png)
+
+如图 依次选择tf卡设备和镜像文件，点击开始，等待烧录完成即可。
+
 ###1. 将
 > http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/Armbian_23.02.2_am40_jammy_current_6.1.11.7z
 
@@ -35,36 +44,50 @@ armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
 ```
 ###3. 完成后，关机拔掉tf卡，重新启动即可。
 
-## 线刷教程
+## Windows线刷教程
 ### 1.下载DriverAssitant_v5.1.1,AndroidTool,rk3399_loader_v1.24.126.bin 
+
 安装DriverAssitant_v5.1.1,打开AndroidTool,如图选择rk3399_loader_v1.24.126.bin 作为 Loader, img结尾的armbian镜像作为 System(注意地址为0x00000000)
 
 ![注意地址system为0x00000000](assets/loader_system_android_tool.png) 
 
 ### 2.	插usb双公头到第一个usb3.0(上面的)，另一端接电脑
 
-### 3.	针对内部系统为原版安卓系统，找到service开关，拨到service；
+### 3.	找到service开关，拨到service；
+
+### 4.发现一个maskrom设备后，点击下载镜像标签，点击执行
+
+ ![输入图片说明](assets/burning.png)
+
+### 5.针对内部系统为原版安卓系统，
+
 插电开机，打开瑞芯微开发工具，会发现一个adb设备，点击切换，
+
 ![输入图片说明](assets/%E5%88%87%E6%8D%A2_androidtool.png)
 
 等待变成发现一个loader设备，
+
 点击高级功能找到 进入maskrom 按钮，点击，然后等待发现一个maskrom设备；
+
  ![输入图片说明](assets/%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD_androidtool.png)
 
-4.	发现一个maskrom设备后，点击下载镜像标签，点击执行
- ![输入图片说明](assets/burning.png)
+如果不是原版安卓系统，比如启动了linux系统（外置内置均可），进入系统后执行
 
-5.	如果不是原版安卓系统，则需拆机 maskrom短接点相接 ，插usb双公头到第一个usb3.0(上面的)，另一端接电脑，插电开机，在刷机软件中观察是否进入maskrom模式；
+```
+dd if=/dev/zero of=/dev/mmcblk2 bs=1M count=300
+```
+
+重启后可以自动进入maskrom
+
+实在没办法，拆机短接maskrom短接点 ，插usb双公头到第一个usb3.0(上面的)，另一端接电脑，插电开机，在刷机软件中观察是否进入maskrom模式；
  ![输入图片说明](assets/maskron%E7%9F%AD%E6%8E%A5%E7%82%B9.png)
 
-6.	刷完记得把service开关，拨到normal；
+### 6.刷完记得把service开关，拨到normal；
 
 
 
 
-### Linux烧写
-
-
+### Linux线刷教程
 
 1. 进入烧写模式
 
@@ -106,9 +129,10 @@ armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
     ./rkbin/tools/upgrade_tool wl 0x0 ./system.img
     # 或
     rkdeveloptool wl 0x0 ./system.img
+
     ```
 
-#### SDCard
+#### Linux下TF烧写
 
 > 也可以使用图形化烧写工具 balena-etcher-electron
 >
@@ -327,7 +351,7 @@ sudo usermod -aG docker $USER
 
 Q：能进 MaskRom 模式，但下载 Loader 初始化 DRAM 总是失败。或 u-boot 无等待时间不能按 RECOVERY 键进入 MaskRom 模式。
 
-A：插上带有系统的 SDCard，默认会从 SDcard 启动，连接串口并打开串口调试软件，开机后迅速在调试窗口按任意键，打断 u-boot 启动（如果不能打断请更换 CP2104 方案的串口），执行如下命令破坏 u-boot，重启后会自动进入 MaskRom 模式。
+A：插上带有系统的 tf卡，默认会从tf卡，连接串口并打开串口调试软件，开机后迅速在调试窗口按任意键，打断 u-boot 启动，执行如下命令破坏 u-boot，重启后会自动进入 MaskRom 模式。
 
 ```shell
 mmc dev 0
