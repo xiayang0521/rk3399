@@ -15,14 +15,14 @@ Armbian下载：https://github.com/ophub/amlogic-s9xxx-armbian/releases
 
 |   部件名称    |       芯片型号       |                           备注说明                           |
 | :-----------: | :------------------: | :----------------------------------------------------------: |
-|      CPU      |        RK3399        | Dual-core Cortex-A72 up to 1.8GHz;Quad-core Cortex-A53 up to 1.4GHz;Mali-T864 GPU |
-|      RAM      |                      |                  Dual-channel DDR3 1GB * 4                   |
+|      CPU      |        RK3399        | Dual-core A72+Quad-core A53, 64 bits, 2GHz;Mali-T864 GPU     |
+|      RAM      |                      |                          4 GB DDR3L SDRAM                    |
 |     Flash     |                      |                         32G  eMMC 5.1                        |
-|   Ethernet    |        RTL8211F      |                            10/100/1000                       |
-|    WIFI+BT    |M2-EKEY-PCIE RTL8822BE|  802.11AC/ABGN PCIE WLAN WITH BLUETOOTH 4.2 SINGLE-CHIP CONTROLLER      |
+|   Ethernet    |        RTL8211F      |                  RJ45 Gigabit Ethernet                       |
+|    WIFI+BT    |M2-EKEY-PCIE RTL8822BE| 802.11AC/ABGN PCIE WLAN WITH BLUETOOTH 4.2 SINGLE-CHIP CONTROLLER |
 |    USB 2.0    |                      |                        USB 2.0[ops]   * 4                    |
-|    USB 3.0    |                      |                   USB 3.0 [on board] * 2                    |
-|     HDMI      |                      |            HDMI 1.4[on board] + HDMI 2.0[ops]                |
+|    USB 3.0    |                      |                   USB 3.0 [on board] * 2                     |
+|     HDMI      |                      |  HDMI 1.4[(1920 × 1080) on board] + HDMI 2.0[ops 4k@60Hz]    |
 |     power     |  12V5A ( 5V2A 12V1A works) |  PORT size： 5.5 * 2.5 [ops main]；3.0 * 1.1 [hided; on board]|
 
 
