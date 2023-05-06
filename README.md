@@ -11,11 +11,12 @@
 |      CPU      |        RK3399        | Dual-core Cortex-A72 up to 1.8GHz;Quad-core Cortex-A53 up to 1.4GHz;Mali-T864 GPU |
 |      RAM      |                      |                  Dual-channel DDR3 1GB * 4                   |
 |     Flash     |                      |                         32G  eMMC 5.1                        |
-|   Ethernet    |        RTL8211F      |                      10/100/1000 Base-T                      |
-|    WIFI+BT    |        RTL8822BE     |               WIFI IEEE802.11 a/b/g/n/ac;BT4.2               |
+|   Ethernet    |        RTL8211F      |                            10/100/1000                       |
+|    WIFI+BT    |        RTL8822BE     |  802.11AC/ABGN PCIE WLAN WITH BLUETOOTH 4.2 SINGLE-CHIP CONTROLLER      |
 |    USB 2.0    |                      |                        USB 2.0[ops]   * 4                    |
-|    USB 3.0    |                      |                   TYPE A Mount Socket * 2                    |
+|    USB 3.0    |                      |                   USB 3.0 [on board] * 2                    |
 |     HDMI      |                      |            HDMI 1.4[on board] + HDMI 2.0[ops]                |
+|     power     |  12V5A ( 5V2A 12V1A works) |  PORT size： 5.5 * 2.5 [ops main]；3.0 * 1.1 [hided; on board]|
 
 ## 卡刷教程
 
