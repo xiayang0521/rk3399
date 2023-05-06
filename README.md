@@ -23,8 +23,9 @@ Armbian下载：https://github.com/ophub/amlogic-s9xxx-armbian/releases
 |    USB 2.0    |                      |                        USB 2.0[ops]   * 4                    |
 |    USB 3.0    |                      |                   USB 3.0 [on board] * 2                     |
 |     HDMI      |                      |  HDMI 1.4[(1920 × 1080) on board] + HDMI 2.0[ops 4k@60Hz]    |
-|     power     |  12V5A ( 5V2A 12V1A works) |  PORT size： 5.5 * 2.5 [ops main]；3.0 * 1.1 [hided; on board]|
+|     power     |  12–19V DC at 2.5–1.6A |  PORT size： 5.5 * 2.5 [ops; main]；3.0 * 1.1 [on board; hided]|
 
+电源测试5V2A、12V1A也能启动，已有5521接口电源的，可以购买5521母转5525 DC转接头。
 
 am40主机介绍
 
