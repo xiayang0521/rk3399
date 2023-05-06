@@ -1,327 +1,73 @@
-# TN3399_V3
+# SMART Technologies AM40
 
-> 资料下载：链接: https://pan.baidu.com/s/1EM7RncJ69zIIchJWVpzsmA 提取码: nqz7
+> 镜像下载：http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/
 >
-> 镜像下载：https://github.com/lanseyujie/tn3399_v3/releases
+> Armbian下载：https://github.com/ophub/amlogic-s9xxx-armbian/releases
 
 ## 规格参数
 
 |   部件名称    |       芯片型号       |                           备注说明                           |
 | :-----------: | :------------------: | :----------------------------------------------------------: |
 |      CPU      |        RK3399        | Dual-core Cortex-A72 up to 1.8GHz;Quad-core Cortex-A53 up to 1.4GHz;Mali-T864 GPU |
-|      RAM      |       K4B8G16        |                  Dual-channel DDR3 1GB * 4                   |
-|     Flash     | SanDisk SDINBDG4-16G |                           eMMC 5.1                           |
-|      PMU      |        RK808D        |                                                              |
-|   Ethernet    |       RTL8211E       |                      10/100/1000 Base-T                      |
-|    WIFI+BT    |        AP6255        |               WIFI IEEE802.11 a/b/g/n/ac;BT4.2               |
-|   SATA 3.0    |        JMS578        |                                                              |
-|    USB 2.0    |        FE1.1s        |     TYPE A Mount Socket * 2 & 4-Pin Connector Socket * 5     |
-|    USB 3.0    |       VL817-Q7       |                   TYPE A Mount Socket * 2                    |
-|     UART      |      SP3232EEN       |                                                              |
-| HDMI 2.0+LVDS |  358775G + ALC5640   |                                                              |
-|   Audio PA    |        NS4258        |                            5W * 2                            |
+|      RAM      |                      |                  Dual-channel DDR3 1GB * 4                   |
+|     Flash     |                      |                         32G  eMMC 5.1                        |
+|   Ethernet    |        RTL8211F      |                      10/100/1000 Base-T                      |
+|    WIFI+BT    |        RTL8822BE     |               WIFI IEEE802.11 a/b/g/n/ac;BT4.2               |
+|    USB 2.0    |                      |                        USB 2.0[ops]   * 4                    |
+|    USB 3.0    |                      |                   TYPE A Mount Socket * 2                    |
+|     HDMI      |                      |            HDMI 1.4[on board] + HDMI 2.0[ops]                |
 
-## 启动流程[^1]
+## 卡刷教程
 
-![启动流程](assets/rockchip_bootflow.png)
+###1. 将
+> http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/Armbian_23.02.2_am40_jammy_current_6.1.11.7z
 
-## 固件编译
+解压出Armbian_23.02.2_am40_jammy_current_6.1.11.img,烧录到tf卡，插到机子上开机，即可启动外置系统 
 
-### 编译环境
-
-```shell
-# 拉取镜像
-docker pull ubuntu:20.04
-# 启动容器
-docker run -it --name builder -v $HOME/build/:/data/ ubuntu:20.04 bash
-
-# 更换软件源
-cp -a /etc/apt/sources.list /etc/apt/sources.list.bak
-sed -i "s@http://.*archive.ubuntu.com@http://mirrors.huaweicloud.com@g" /etc/apt/sources.list
-sed -i "s@http://.*security.ubuntu.com@http://mirrors.huaweicloud.com@g" /etc/apt/sources.list
-
-# 更新软件包
-apt update && apt upgrade -y
-
-# 进入工作目录
-cd /data/
+###2. 如需装进emmc，ssh登陆后，将Armbian_23.02.2_am40_jammy_current_6.1.11.img上传到/root/,执行
 ```
-
-### 工具链
-
-```shell
-# arm64 工具链
-# 主页：https://www.linaro.org/downloads/
-wget -c https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-linux-gnu/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu.tar.xz
-# 或者使用镜像
-wget -c https://mirrors.tuna.tsinghua.edu.cn/armbian-releases/_toolchains/gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu.tar.xz
-
-# 解压工具链
-mkdir toolchain
-tar xvJf gcc-linaro-*-x86_64_aarch64-linux-gnu.tar.xz -C ./toolchain --strip-components=1
-
-# arm 裸机工具链，主要用于编译 ATF
-apt install -y gcc-arm-none-eabi
-# 或者自行下载并配置
-# 主页：https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads
-wget -c https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
-
-# 配置环境变量
-export PATH=/data/toolchain/bin:$PATH
-# 测试
-aarch64-linux-gnu-gcc -v
-arm-none-eabi-gcc -v
-
-# 安装辅助工具
-apt install -y build-essential libncurses5-dev git make
+dd if=Armbian_23.02.2_am40_jammy_current_6.1.11.img of=/dev/mmcblk2 bs=1M
 ```
-
-### u-boot
-
-#### 设备树
-
-```shell
-# 设备树的编译与反编译
-apt install -y device-tree-compiler
-
-# dtb => dts
-dtc -I dtb -O dts -o tn3399-linux.dts tn3399-linux.dtb
-# dts => dtb
-dtc -I dts -O dtb -o tn3399-linux.dtb tn3399-linux.dts
+ 或者执行
 ```
-
-#### 编译
-
-##### 原版 u-boot[^2][^3]
-
-```shell
-# ATF
-git clone https://github.com/ARM-software/arm-trusted-firmware.git
-cd arm-trusted-firmware
-
-# 编译 ATF
-unset BL31
-make CROSS_COMPILE=aarch64-linux-gnu- PLAT=rk3399
-# 得到 build/rk3399/release/bl31/bl31.elf
-export BL31=/data/arm-trusted-firmware/build/rk3399/release/bl31/bl31.elf
-
-apt install -y bison flex python3 device-tree-compiler bc
-git clone https://github.com/u-boot/u-boot.git
-cd u-boot
-
-# 修改设备树
-cat ../tn3399_v3/config/tn3399-linux.dts > ./arch/arm/dts/rk3399-rock960.dts
-
-# 清理工程
-make distclean
-# 生成 .config 配置文件
-make rock960-rk3399_defconfig
-# 或者自定义配置
-make menuconfig
-
-# 编译 u-boot
-export CROSS_COMPILE=aarch64-linux-gnu-
-make -j$(nproc)
-# 得到 idbloader.img 和 u-boot.itb
-# idbloader.img 是 TPL 和 SPL 的合成文件，前者负责 DDR 初始化，后者负责加载 ATF 和 u-boot
-# u-boot.itb 是由 u-boot 和 ATF 合成的 FIT 格式的镜像文件
-
-# 生成 rk3399_loader_v1.xx.xxx.bin
-git clone https://github.com/rockchip-linux/rkbin.git
-cd rkbin
-./tools/boot_merger ./RKBOOT/RK3399MINIALL.ini .
+armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
 ```
+###3. 完成后，关机拔掉tf卡，重新启动即可。
 
-##### RockChip 维护的 u-boot[^4]
+## 线刷教程
+### 1.下载DriverAssitant_v5.1.1,AndroidTool,rk3399_loader_v1.24.126.bin 
+安装DriverAssitant_v5.1.1,打开AndroidTool,如图选择rk3399_loader_v1.24.126.bin 作为 Loader, img结尾的armbian镜像作为 System(注意地址为0x00000000)
 
-```shell
-# 用于合并 loader 的工具集
-git clone https://github.com/rockchip-linux/rkbin.git
+![注意地址system为0x00000000](assets/loader_system_android_tool.png) 
 
-apt install -y bison flex python3 device-tree-compiler bc
-git clone -b stable-4.4-rk3399-linux https://github.com/rockchip-linux/u-boot.git
-cd u-boot
+### 2.	插usb双公头到第一个usb3.0(上面的)，另一端接电脑
 
-# 不使用项目指定的工具链
-sed -i 's@TOOLCHAIN_ARM32=.*@TOOLCHAIN_ARM32=/@g' ./make.sh
-sed -i 's@TOOLCHAIN_ARM64=.*@TOOLCHAIN_ARM64=/@g' ./make.sh
-sed -i 's@${absolute_path}/bin/@@g' ./make.sh
+### 3.	针对内部系统为原版安卓系统，找到service开关，拨到service；
+插电开机，打开瑞芯微开发工具，会发现一个adb设备，点击切换，
+![输入图片说明](assets/%E5%88%87%E6%8D%A2_androidtool.png)
 
-# 编译修改过的 u-boot
-./make.sh evb-rk3399
-# 得到如下文件
-rk3399_loader_v1.24.126.bin
-trust.img
-uboot.img
+等待变成发现一个loader设备，
+点击高级功能找到 进入maskrom 按钮，点击，然后等待发现一个maskrom设备；
+ ![输入图片说明](assets/%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD_androidtool.png)
 
-# 合成 idbloader.img 文件
-../rkbin/tools/mkimage -n rk3399 -T rksd -d ../rkbin/bin/rk33/rk3399_ddr_800MHz_v1.24.bin idbloader.img
-cat ../rkbin/bin/rk33/rk3399_miniloader_v1.26.bin >> idbloader.img
+4.	发现一个maskrom设备后，点击下载镜像标签，点击执行
+ ![输入图片说明](assets/burning.png)
 
-# 也可以从此项目编译原版 u-boot
-```
+5.	如果不是原版安卓系统，则需拆机 maskrom短接点相接 ，插usb双公头到第一个usb3.0(上面的)，另一端接电脑，插电开机，在刷机软件中观察是否进入maskrom模式；
+ ![输入图片说明](assets/maskron%E7%9F%AD%E6%8E%A5%E7%82%B9.png)
 
-### kernel
+6.	刷完记得把service开关，拨到normal；
 
-#### 原版 kernel
 
-> 此仓库约占用 3 GB，编译后约占用 8 GB，请至少留有 10 GB 硬盘空间，编译大约需要 40 分钟。
 
-```shell
-apt install -y libssl-dev lzop kmod flex bison
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
 
-# 或从镜像快速克隆
-git clone https://mirrors.tuna.tsinghua.edu.cn/git/linux.git
-cd linux
-git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-git fetch upstream
+### Linux烧写
 
-# 切换内核版本
-git checkout linux-5.8.y
 
-# 防止版本号后出现 -dirty 等后缀
-touch .scmversion
 
-# 修改设备树
-cat ../tn3399_v3/config/tn3399-linux.dts > ./arch/arm64/boot/dts/rockchip/rk3399-rock960.dts
-sed -i 's/bcm4329-fmac/bcm43455-fmac/g' ./arch/arm64/boot/dts/rockchip/rk3399-rock960.dtsi
+1. 进入烧写模式
 
-# 清理工程
-make distclean
-# 生成 .config 配置文件
-make defconfig
-# 或者自定义配置
-make menuconfig
-make savedefconfig
-
-# 编译 kernel
-export ARCH=arm64
-export CROSS_COMPILE=aarch64-linux-gnu-
-make -j$(nproc)
-# 得到如下文件
-arch/arm64/boot/dts/rockchip/rk3399-rock960.dtb
-arch/arm64/boot/Image
-```
-
-#### RockChip 维护的 kernel[^5]
-
-```shell
-# TODO
-```
-
-### rootfs
-
-```shell
-# 使用 custom_rootfs.sh 定制 rootfs
-./scripts/build_rootfs.sh custom
-```
-
-### 镜像制作
-
-#### 打包
-
-```shell
-# 按如下目录结构整理编译所得的文件
-mkdir -p ./out/{kernel,u-boot}
-./out/
-├── kernel
-│   ├── Image
-│   └── tn3399-linux.dtb
-├── rootfs
-│   └── ...
-└── u-boot
-    ├── idbloader.img
-    ├── trust.img (仅使用 uboot.img 时使用，详见启动流程一节)
-    └── u-boot.img / u-boot.itb
-
-# 生成 boot.img
-./scripts/build_image.sh boot
-
-# 生成 rootfs.img
-./scripts/build_image.sh rootfs
-
-# 生成 system.img
-./scripts/build_image.sh system
-```
-
-#### 修改
-
-```shell
-# -f 查找第一个未使用的设备
-# -P 创建带分区的回环设备
-sudo losetup -f --show -P system.img
-
-# 查看镜像的分区信息
-fdisk -l system.img
-
-# 挂载分区 3
-sudo mount /dev/loop0p3 /mnt/
-# 另一种方法，$begin 为分区 3 的起点
-sudo mount -o loop,offset=$((512 * $begin)) system.img /mnt/
-
-# 在此执行自定义修改命令
-
-# 卸载分区
-# 注意：卸载时 shell 不可以处于 /mnt/ 下，否则报错 umount: /mnt: target is busy.
-sudo umount /mnt/
-
-# 断开回环设备
-sudo losetup -d /dev/loop0
-
-# 断开所有回环设备
-sudo losetup -D
-```
-
-## 烧写调试
-
-### 出厂固件[^6]
-
-#### 备份
-
-```shell
-# 查看 cmdline
-# 将 cmdline 记录在 parameter_gpt.txt 中
-adb shell
-su
-cat /proc/cmdline
-
-# 查看分区表
-./rkbin/tools/upgrade_tool pl
-# 或
-rkdeveloptool ppt
-
-# 备份分区
-# 备份文件保存在 ./out/backup 路径下
-./scripts/factory_image.sh backup
-```
-
-#### 恢复
-
-```shell
-# 恢复分区
-# 从 ./out/backup 路径读取备份进行恢复
-# 警告：尚未完成测试
-./scripts/factory_image.sh restore ./rk3399_loader_v1.22.119.bin
-```
-
-### 固件烧写
-
-#### eMMC
-
-> 相关工具：https://github.com/rockchip-linux/rkbin
-
-1. 创建 udev 规则
-
-    可以避免无 sudo 权限时不能发送指令或烧写报错 “Creating Comm Object failed!”。
-
-    ```shell
-    echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="2207", MODE="0660", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/51-android.rules
-    ```
-
-2. 进入烧写模式
-
-    连接 Micro-USB，长按 RECOVER 键并上电，如果为 Android 系统此时应为 Loader 模式，其他系统可能为 MaskRom 模式。
+    同上进入 MaskRom 模式
 
     ```shell
     # 查看连接的设备
@@ -345,7 +91,7 @@ rkdeveloptool ppt
     rkdeveloptool rd 3
     ```
 
-3. 初始化 DRAM
+2. 初始化 DRAM
 
     需要在 MaskRom 模式下才下载，否则报错 “The device does not support this operation!”。
 
