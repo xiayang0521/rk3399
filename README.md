@@ -78,9 +78,7 @@ armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
 
 https://gitee.com/xiayang0521/rk3399/releases/tag/rk3399%E5%88%B7%E6%9C%BA%E5%B7%A5%E5%85%B7%E5%92%8C%E9%A9%B1%E5%8A%A8
 
-安装DriverAssitant_v5.1.1,打开AndroidTool,如图选择rk3399_loader_v1.24.126.bin 作为 Loader, img结尾的armbian镜像作为 System(注意地址为0x00000000)
-
-![注意地址system为0x00000000](assets/loader_system_android_tool.png) 
+安装DriverAssitant_v5.1.1,打开AndroidTool
 
 ### 2.	插usb双公头到第一个usb3.0(上面的)，另一端接电脑
 
@@ -114,9 +112,21 @@ dd if=/dev/zero of=/dev/mmcblk2 bs=1M count=300
 拆机短接maskrom短接点 ，插usb双公头到第一个usb3.0(上面的)，另一端接电脑，插电开机，在刷机软件中观察是否进入maskrom模式；
  ![输入图片说明](assets/maskron%E7%9F%AD%E6%8E%A5%E7%82%B9.png)
 
-### 5.发现一个maskrom设备后，点击下载镜像标签，点击执行
+### 5.发现一个maskrom设备后，
+
+#### a 刷linux
+
+如图选择rk3399_loader_v1.24.126.bin 作为 Loader, img结尾的armbian镜像作为 System(注意地址为0x00000000)
+
+![注意地址system为0x00000000](assets/loader_system_android_tool.png) 点击下载镜像标签，点击执行
 
  ![输入图片说明](assets/burning.png)
+
+#### b 刷android update.img
+
+如图 1 点击升级固件，2 点击固件 选择android update.img固件，3 点击升级
+
+![输入图片说明](android%20update.png)
 
 
 ### 6.刷完记得把service开关，拨到normal
