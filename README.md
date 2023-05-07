@@ -45,7 +45,7 @@ https://g.itemz.cn/IooVVP
 
 ## 卡刷教程
 
-###1. 将
+### 1. 将
 
 http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/Armbian_23.02.2_am40_jammy_current_6.1.11.7z
 
@@ -63,7 +63,23 @@ http://files.kos.org.cn/%E7%91%9E%E8%8A%AF%E5%BE%AE/am40/Armbian_23.02.2_am40_ja
 插到机子上，开机，即可启动tf外置系统 
 
 
-###2. 如需装进emmc，ssh登陆后，将Armbian_23.02.2_am40_jammy_current_6.1.11.img上传到/root/,执行
+### 2. 需要备份EMMC里的系统
+AM40原厂Android_mmcblk2备份
+
+要使用 dd 和 gzip 备份，可以执行命令：
+```
+dd if=/dev/mmcblk2 | gzip > Android_am40_mmcblk2.img.gz
+```
+附我机子的备份文件 如果忘记备份了 用我的恢复也许也行
+
+https://github.com/xiayang0521/rk3399/releases/download/AM40%E5%8E%9F%E5%8E%82Android_mmcblk2%E5%A4%87%E4%BB%BD/Android_am40_mmcblk2.img.gz
+
+在还原时，可以执行下列命令：
+```
+gzip -dc Android_am40_mmcblk2.img.gz | dd of=/dev/mmcblk2
+```
+
+如需把Armbian装进emmc，ssh登陆后，将Armbian_23.02.2_am40_jammy_current_6.1.11.img上传到/root/,执行
 ```
 dd if=Armbian_23.02.2_am40_jammy_current_6.1.11.img of=/dev/mmcblk2 bs=1M
 ```
@@ -71,7 +87,7 @@ dd if=Armbian_23.02.2_am40_jammy_current_6.1.11.img of=/dev/mmcblk2 bs=1M
 ```
 armbian-install #选择安装到emmc，并且更新bootloader从emmc启动
 ```
-###3. 完成后，关机拔掉tf卡，重新启动即可。
+### 3. 完成后，关机拔掉tf卡，重新启动即可。
 
 ## Windows线刷教程
 ### 1.下载DriverAssitant_v5.1.1,AndroidTool,rk3399_loader_v1.24.126.bin 
